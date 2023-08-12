@@ -91,6 +91,9 @@ pub struct Config {
 
     #[serde(default = "default_universes")]
     pub universe: BTreeMap<UniverseName, UniverseConfig>,
+
+    #[serde(default)]
+    pub ignore_crates: BTreeSet<String>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]

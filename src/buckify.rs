@@ -216,11 +216,13 @@ fn generate_rules<'scope>(
                 let is_private_root_pkg =
                     context.index.is_root_package(pkg) && !context.index.is_public_package(pkg);
                 if !is_private_root_pkg {
-                    for rule in rules {
-                        let _ = rule_tx.send(Ok(rule));
-                    }
-                    if context.config.vendor.is_none() {
-                        deps.push((pkg, TargetReq::Sources));
+                    if !context.config.ignore_crates.contains(&tgt.name) {
+                        for rule in rules {
+                            let _ = rule_tx.send(Ok(rule));
+                        }
+                        if context.config.vendor.is_none() {
+                            deps.push((pkg, TargetReq::Sources));
+                        }
                     }
                 }
                 generate_dep_rules(context, scope, rule_tx.clone(), deps);
